@@ -23,3 +23,10 @@ namespace Catalog.Api.Products.CreateProduct
         }
     }
 }
+
+/*
+docker ps
+docker exec -it  e30fe225b154 bash
+psql -U postgres -d CatalogDb
+SELECT * FROM mt_doc_product;
+*/
