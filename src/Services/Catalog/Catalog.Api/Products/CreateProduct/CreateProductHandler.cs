@@ -1,7 +1,7 @@
 ﻿
 namespace Catalog.Api.Products.CreateProduct
 {
-    public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFilem, decimal Price) : ICommand<CreateProductResult>;
+    public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price) : ICommand<CreateProductResult>;
     public record CreateProductResult(Guid Id);
 
     internal class CreateProductCommandHandler(IDocumentSession session) : ICommandHandler<CreateProductCommand, CreateProductResult>
@@ -14,7 +14,7 @@ namespace Catalog.Api.Products.CreateProduct
                 Category = command.Category,
                 Description = command.Description,
                 Price = command.Price,
-                ImageFile = command.ImageFilem
+                ImageFile = command.ImageFile
             };
 
             session.Store(product);
