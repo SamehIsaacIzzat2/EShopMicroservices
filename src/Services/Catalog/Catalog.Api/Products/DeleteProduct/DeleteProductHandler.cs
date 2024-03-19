@@ -1,11 +1,15 @@
 ﻿
-using Catalog.Api.Products.CreateProduct;
-
 namespace Catalog.Api.Products.DeleteProduct
 {
     public record DeleteProductCommand(Guid Id) : ICommand<DeleteProductResult>;
     public record DeleteProductResult(bool IsSuccess);
-
+    public class CreateProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public CreateProductCommandValidator()
+        {
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required!");
+        }
+    }
     internal class DeleteProductCommandHandler(IDocumentSession session) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
     {
         public async Task<DeleteProductResult> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
@@ -13,7 +17,7 @@ namespace Catalog.Api.Products.DeleteProduct
             var existingProduct = await session.LoadAsync<Product>(command.Id, cancellationToken);
             if (existingProduct == null)
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(command.Id);
             }
 
             session.Delete<Product>(command.Id);
